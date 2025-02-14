@@ -15,7 +15,7 @@ const githubApi = axios.create({
 const postComment = async (owner, repo, pullNumber, file, summary) => {
   try {
     const response = await githubApi.post(`/repos/${owner}/${repo}/issues/${pullNumber}/comments`, {
-      body: `### Summary of changes in ${file}:\n\n${summary}`,
+      body: `### Review of changes in ${file}:\n\n${summary}`,
     });
 
     console.log(`Comment posted for ${file}: ${response.data.html_url}`);
@@ -64,7 +64,7 @@ const getDiffSummary = async (diff, file) => {
         { role: "system", content: "You are a code review assistant." },
         { role: "user", content: `Summarize and review these code changes for ${file}. Identify issues, optimizations, and best practices. Provide concise, actionable feedback:\n\n${diff}` }
       ],
-      max_tokens: 150,
+      max_tokens: 500,
     });
 
     return response.choices[0].message.content.trim();

@@ -60,15 +60,15 @@ const getDiffSummary = async (diff, file) => {
     const response = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
-        { role: "user", content: `Summarize and review these code changes in ${file}.\n\n${diff}` }
+        { role: "user", content: `Review these code changes in ${file}.\n\n${diff}` }
       ],
-      max_tokens: 150,
+      max_tokens: 500,
     });
 
     return response.choices[0].message.content.trim();
   } catch (error) {
-    console.error(`Error summarizing diff for ${file}:`, error.response?.data || error.message);
-    return `Could not generate a summary for ${file}.`;
+    console.error(`Error reviewing diff for ${file}:`, error.response?.data || error.message);
+    return `Could not generate a review for ${file}.`;
   }
 };
 
