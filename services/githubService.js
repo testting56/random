@@ -62,7 +62,7 @@ const getDiffSummary = async (diff, file) => {
       messages: [
         { role: "user", content: `Review these code changes in ${file}.\n\n${diff}` }
       ],
-      max_tokens: 500,
+      max_tokens: 800,
     });
 
     return response.choices[0].message.content.trim();
