@@ -40,26 +40,25 @@ jobs:
           echo "Checking if MY_GITHUB_TOKEN is set..."
           if [[ -z "${MY_GITHUB_TOKEN}" ]]; then
             echo "MY_GITHUB_TOKEN is NOT set!"
-            exit 1  # Exit if the token is not available
+            exit 1  
           else
             echo "MY_GITHUB_TOKEN is successfully set!"
           fi
-          # Make a test request to verify the token works (fetch user info from GitHub)
           node -e "
             const axios = require('axios');
-            const { MY_GITHUB_TOKEN } = process.env;  // Access token from environment
+            const { MY_GITHUB_TOKEN } = process.env;
             const githubApi = axios.create({
               baseURL: 'https://api.github.com',
               headers: { Authorization: \`Bearer \${MY_GITHUB_TOKEN}\` }
             });
-            
+
             async function testToken() {
               try {
                 const response = await githubApi.get('/user');
                 console.log('Token is valid. User Info:', response.data);
               } catch (error) {
                 console.error('Error verifying token:', error.response?.data || error.message);
-                process.exit(1);  // Exit if the token is invalid
+                process.exit(1);
               }
             }
             testToken();
@@ -68,6 +67,6 @@ jobs:
       - name: Run Summarize PR Diff Script
         env:
           MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  
-          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }} 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: node post-pr-summary.js

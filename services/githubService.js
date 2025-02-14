@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { CohereClientV2 } = require("cohere-ai");
+const { OpenAI } = require("openai");
 
 const githubApi = axios.create({
   baseURL: "https://api.github.com",
@@ -11,10 +11,9 @@ const githubApi = axios.create({
 
 console.log(process.env.MY_GITHUB_TOKEN);
 
-const cohere = new CohereClientV2({
-  token: process.env.COHERE_API_KEY,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 });
-
 
 const getPullRequestDiff = async (owner, repo, pullNumber) => {
   try {
@@ -28,7 +27,6 @@ const getPullRequestDiff = async (owner, repo, pullNumber) => {
   }
 };
 
-
 const getPullRequestFiles = async (owner, repo, pullNumber) => {
   try {
     const response = await githubApi.get(`/repos/${owner}/${repo}/pulls/${pullNumber}/files`);
@@ -38,7 +36,6 @@ const getPullRequestFiles = async (owner, repo, pullNumber) => {
     throw new Error("Failed to fetch PR files");
   }
 };
-
 
 const getPullRequestDiffForFile = async (owner, repo, pullNumber, file) => {
   try {
@@ -57,20 +54,22 @@ const getPullRequestDiffForFile = async (owner, repo, pullNumber, file) => {
 };
 
 const getDiffSummary = async (diff, file) => {
-    if (!diff) return `No significant changes detected in ${file}.`;
-  
-    try {
-      const response = await cohere.generate({
-        model: "command",
-        prompt: `Summarize & Review these code changes in following file. Identify issues, optimizations, and best practices. Provide concise, actionable feedback, In bullet points. ${file}\n\n${diff}`,
-        max_tokens: 150,
-      });
-  
-      return response.generations[0].text.trim();
-    } catch (error) {
-      console.error(`Error summarizing diff for ${file}:`, error.response?.data || error.message);
-      return `Could not generate a summary for ${file}.`;
-    }
-  };
-  
-  module.exports = { getPullRequestDiff, getDiffSummary, getPullRequestFiles, getPullRequestDiffForFile };
+  if (!diff) return `No significant changes detected in ${file}.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        { role: "user", content: `Summarize and review these code changes in ${file}.\n\n${diff}` }
+      ],
+      max_tokens: 150,
+    });
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error(`Error summarizing diff for ${file}:`, error.response?.data || error.message);
+    return `Could not generate a summary for ${file}.`;
+  }
+};
+
+module.exports = { getPullRequestDiff, getDiffSummary, getPullRequestFiles, getPullRequestDiffForFile };
