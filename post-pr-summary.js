@@ -62,7 +62,7 @@ const getDiffSummary = async (diff, file) => {
       model: "gpt-4",
       messages: [
         { role: "system", content: "You are a code review assistant." },
-        { role: "user", content: `Summarize and review these code changes for ${file}. Identify issues, optimizations, and best practices. Provide concise, actionable feedback:\n\n${diff}` }
+        { role: "user", content: `Summarize and review these code changes for ${file}. Identify issues, optimizations, and best practices. Provide concise, actionable feedback in 250 - 300 words:\n\n${diff}` }
       ],
       max_tokens: 500,
     });
