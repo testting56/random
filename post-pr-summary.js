@@ -75,7 +75,7 @@ const getDiffSummary = async (diff, file) => {
     try {
       const response = await cohere.generate({
         model: "command",
-        prompt: `Summarize & Review these code changes in following file. Identify issues, optimizations, and best practices. Provide concise, actionable feedback, In bullet points. ${file}\n\n${diff}`,
+        prompt: `Review the code changes for structure, performance, and best practices. Ensure JS and CSS are not inline, suggest creating classes/functions, and check if session storage or caching can be used. Identify optimizations, error handling, security issues, and readability improvements with concise, actionable feedback. ${file}\n\n${diff}`,
         max_tokens: 150,
       });
   
