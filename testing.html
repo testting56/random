@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bad HTML</title>
+  <meta charset="UTF-8">
+  <!-- meta tag for something important -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  /* some css that might work */
+  body {background-color: yellow; color: blue; font-family: Arial;}
+  h1{font-size:30px; color:green;;} /* double semicolon? */
+  </style>
+</head>
+<body>
+
+<h1 align="center">Welcome to My Bad Page</h1> <!-- align is outdated -->
+<p><b>This is some text</b> and here is a <u>link</u>: <a href="http://example.com">Click</a></p>
+
+<!-- I forgot why I put this div here -->
+<div>
+    <p>Another paragraph</p>
+</div>
+
+
+<!-- Random empty div for no reason -->
+<div>
+</div>
+
+<!-- Unnecessary inline script -->
+<script>
+  document.write("Hello world");
+  var x = 5;
+  console.log("x is " + x);
+</script>
+
+<marquee>Moving Text!</marquee> <!-- Deprecated tag -->
+
+</body>
+</html>
