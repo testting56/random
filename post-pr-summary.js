@@ -62,7 +62,7 @@ const getDiffSummary = async (diff, file) => {
       model: "gpt-4",
       messages: [
         { role: "system", content: "You are a code review assistant." },
-        { role: "user", content: `Summarize and review these code changes for ${file}. Your task is to review the provided code and offer concise, actionable feedback within 80 words or less in proper formatted, less wordy, bullets, focusing on issues, optimizations, and best practices. Any code changes that need to be made should be clearly stated in code blocks. Please ensure the feedback is within a limit of 100 tokens.:\n\n${diff}` }
+        { role: "user", content: `Review the code changes for ${file}. Provide concise, actionable feedback in bullet points. Focus on issues, optimizations, and best practices. Keep responses brief for small changes and detailed for complex changes, offering code suggestions in blocks where needed. Avoid unnecessary details.:\n\n${diff}` }
       ],
       max_tokens: 800,
     });
