@@ -62,7 +62,7 @@ const getDiffSummary = async (diff, file) => {
       model: "gpt-4",
       messages: [
         { role: "system", content: "You are a code review assistant." },
-        { role: "user", content: `Review the code changes for ${file}. Provide concise, actionable feedback focused only on errors, critical issues, optimizations, or bad syntax. If everything is fine, respond with "Looks good to me." For issues like security or syntax errors, provide quick solutions with minimal explanation. Feedback length should match the size and complexity of the diff. diff : ${diff}` }
+        { role: "user", content: `Review the code changes for ${file}. Provide concise, actionable feedback focusing only on errors, critical issues, optimizations, or bad syntax. If everything is fine, respond with "Looks good to me." For issues like security or syntax errors, provide quick solutions with minimal explanation. Feedback length should match the size and complexity of the diff. Avoid unnecessary details. diff : ${diff}` }
       ],
       max_tokens: 800,
     });
