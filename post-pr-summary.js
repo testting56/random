@@ -65,10 +65,10 @@ const getDiffSummary = async (diff, file) => {
         {
           role: "user",
           content: `Review the code changes for ${file}. Provide concise, actionable feedback focusing only on errors, critical issues, optimizations, or bad syntax.
-          If everything is fine, respond with "Looks good to me."
-          For issues like security or syntax errors, provide quick solutions with minimal explanation.
-          Feedback length should match the size and complexity of the diff.
-          Avoid unnecessary details and provide feedback in short bullet points. diff: ${diff}`
+                    If everything is fine, respond with "Looks good to me."
+                    For issues like security or syntax errors, provide quick solutions with minimal explanation.
+                    Feedback length should match the size and complexity of the diff.
+                    Avoid unnecessary details and provide feedback in short bullet points. diff: ${diff}`
         }
       ],
       max_tokens: 800,
