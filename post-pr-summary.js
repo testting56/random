@@ -62,7 +62,7 @@ const getDiffSummary = async (diff, file) => {
       model: "gpt-4",
       messages: [
         { role: "system", content: "You are a code review assistant." },
-        { role: "user", content: `Review the code changes for ${file}. Provide concise, actionable feedback in bullet points only on errors or critical changes, Do not include any extra information keep it as short as possible. Focus on issues, optimizations, and best practices. Keep responses brief for small changes and detailed for complex changes, offering code suggestions in blocks where needed. Avoid unnecessary details. Avoid giving nice to have or optional feedback. Keep the verbosity of your response as less as possible. :\n\n${diff}` }
+        { role: "user", content: `Review the code changes for ${file}. Provide concise, actionable feedback focused only on errors, critical issues, optimizations, or bad syntax. If everything is fine, respond with "Looks good to me." For issues like security or syntax errors, provide quick solutions with minimal explanation. Feedback length should match the size and complexity of the diff. diff : ${diff}` }
       ],
       max_tokens: 800,
     });
