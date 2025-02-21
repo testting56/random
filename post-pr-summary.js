@@ -13,6 +13,11 @@ const githubApi = axios.create({
 });
 
 const postComment = async (owner, repo, pullNumber, file, summary) => {
+  if (summary === "Looks good to me.") {
+    console.log(`No issues found in ${file}. Skipping comment.`);
+    return;
+  }
+  
   try {
     const response = await githubApi.post(`/repos/${owner}/${repo}/issues/${pullNumber}/comments`, {
       body: `### Review of changes in ${file}:\n\n${summary}`,
