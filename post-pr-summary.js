@@ -13,7 +13,7 @@ const githubApi = axios.create({
 });
 
 const postComment = async (owner, repo, pullNumber, file, summary) => {
-  if (summary === "Looks good to me.") {
+  if (summary.includes("Looks good to me.")) {
     console.log(`No issues found in ${file}. Skipping comment.`);
     return;
   }
