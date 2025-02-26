@@ -13,6 +13,11 @@ const githubApi = axios.create({
 });
 
 const postComment = async (owner, repo, pullNumber, file, summary) => {
+  if (summary.includes("Looks good to me.")) {
+    console.log(`No issues found in ${file}. Skipping comment.`);
+    return;
+  }
+  
   try {
     const response = await githubApi.post(`/repos/${owner}/${repo}/issues/${pullNumber}/comments`, {
       body: `### Review of changes in ${file}:\n\n${summary}`,
@@ -62,7 +67,15 @@ const getDiffSummary = async (diff, file) => {
       model: "gpt-4",
       messages: [
         { role: "system", content: "You are a code review assistant." },
-        { role: "user", content: `Summarize and review these code changes for ${file}. Your task is to review the provided code and offer concise, actionable feedback within 300 words or less in proper formatted, less wordy, bullets, focusing on issues, optimizations, and best practices. Any code changes that need to be made should be clearly stated in code blocks. Please ensure the feedback is within a limit of 500 tokens.:\n\n${diff}` }
+        {
+          role: "user",
+            content: `Review the code changes for ${file}. Provide concise, actionable feedback focusing only on errors, critical issues, optimizations, or bad syntax.  
+              
+              - If there are issues (security flaws, syntax errors, inefficiencies), list them briefly with quick fixes.  
+              - Do **not** comment if the code is fine—only provide critical feedback.  
+              - Keep feedback short, using bullet points. Avoid unnecessary details.  
+              - Feedback length should match the size and complexity of the diff: ${diff}`
+        }
       ],
       max_tokens: 800,
     });
